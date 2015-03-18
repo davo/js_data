@@ -27,8 +27,8 @@ It assumes you already have some basic knowledge of JavaScript.
 
 Access this guide in:
 
-- [English](/)
-- [Español](/es/)
+- [English](/en/)
+- [Español](/es/) - coming soon!
 
 ## Code
 
