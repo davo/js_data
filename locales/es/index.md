@@ -4,7 +4,7 @@ Esta guía pretende enseñar lo básico sobre la manipulación de datos usando J
 
 La presente guía mostrará algunas técnicas básicas y cómo deben ser implementadas, usando Javascript Nativo, la librería [d3.js](http://d3js.org/) y [lodash](http://lodash.com/).
 
-Se asume que el lector ya posee algunos conocimientos básicos de Javascript.
+Se asume que el lector ya posee algunos conocimientos básicos de JavaScript.
 
 ## Tareas
 <ul class='tasks'>
@@ -25,7 +25,7 @@ Se asume que el lector ya posee algunos conocimientos básicos de Javascript.
 Puedes acceder a esta guía en los siguientes idiomas:
 
 - [English](/)
-- [Español](/es/)
+- [Español](/es-ES/)
 
 ## Código
 
