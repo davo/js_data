@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Verificando datos - Learn JS Data</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="description" content="An introduction to data processing and munging in JavaScript. Learn to load, modify, and transform data quickly using powerful JavaScript libraries.">
+  <meta name="keywords" content="javascript,data processing, data munging">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@bocoup">
+  <meta name="twitter:creator" content="@vlandham">
+  <meta name="twitter:title" content="Learn JS Data: Data processing in JavaScript">
+  <meta name="twitter:description" content="An introduction to data processing and munging in JavaScript. Learn to load, modify, and transform data quickly using powerful JavaScript libraries.">
+<meta name="twitter:image:src" content="http://learnjsdata.com/img/logo.png">
+<meta property="og:site_name" content="Learn JS Data"/>
+<meta property="og:title" content="Data manipulation, munging, and processing in JavaScript" />
+<meta property="og:url" content="http://learnjsdata.com" />
+<meta property="og:description" content="This guide teaches the basics of manipulating data using JavaScript in the browser, or in node.js. 
+Specifically, demonstrating tasks that are geared around preparing data for further analysis and visualization. This guide will demonstrate some basic techniques and how to implement them using core JavaScript API, the d3.js library and lodash." />
+<meta property="og:image" content="http://learnjsdata.com/img/fb.jpg" />
+
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" media="all" href="/custom.css" />
+  <script src='/lib/d3/d3.min.js'></script>
+  <script src='/lib/queue-async/queue.min.js'></script>
+  <script src='/lib/lodash/lodash.min.js'></script>
+</head>
+<body>
+
+  <header>
+    <div class="contents">
+      <a href="https://github.com/vlandham/js_data"><img class="github" style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+
+      <a href='index.html'>
+        <img class='logo' src="/img/logo.png">
+        <h1>Learn JS Data</h1>
+        <h3>Data manipulation, munging, and processing in JavaScript</h3>
+      </a>
+    </div>
+  </header>
+
+  <div id="container">
+    <h1 id="verificando-datos">Verificando datos</h1>
+<p>El procesamiento de datos es un negocio tramposo, lleno de dificultades y trampas. Esperemos que las tareas de esta guía ayudem a iniciarse en este proceso. Pero tu, yo, y el mundo entero cometerá errores. Es natural.</p>
+<p>Pero errores en procesamiento de datos, como todos los otros tipos de errores, pueden ser dolorosos. Pueden resultar en horas buscando errores, días de reprocesamiento, y meses de llanto. Cómo nosotros sabemos que los errores suceden y continuarán sucediendo, ¿qué podemos hacer para quitarnos algo del dolor?</p>
+<p>En una palabra, protección. Nosotros necesitamos alguna forma de protejernos de los golpes y moretones del procesamiento de datos. Y yo prodría sugerir que esa protección viene en forma de test simples que comprueban los supuesto que tienes sobre la forma y el contenido de tus datos.</p>
+<p>Amenos que haya una necesidad de performance extrema, esos test deben ejecutarse en el pipeline del procesamiento de los datos. Optimamente, deben ser fáciles de encender y apagar para que puedas deshabilitarlos si necesitas implementar tu código.</p>
+<h2 id="aserci-nes">Aserciónes</h2>
+<p>Esos tests pueden ser creados con <a href="http://es.wikipedia.org/wiki/Aserci%C3%B3n_%28inform%C3%A1tica%29">aserciones</a> - funciones que controla la veracidad de una sentencia en el código. Tipicamente, generan un error cuando un valor esperado no es verdadero.</p>
+<p>Javascript no posee aserciones, pero podemos corregir esta deficiencia con una simple función.</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">assert</span><span class="hljs-params">(isTrue, message)</span> </span>{
+  <span class="hljs-keyword">if</span>(!isTrue) {
+    <span class="hljs-built_in">console</span>.log(message);
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</code></pre>
+<p>Esto emitirá un mensaje si la entrada no es verdadera. Tipicamente las aseciones <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Sentencias/throw">lanzan</a> errores, pero nosotros solo registraremos estos para propositos explicativos.</p>
+<h2 id="suposiciones-en-los-contenidos-de-los-datos">Suposiciones en los contenidos de los datos</h2>
+<p>Ahora usemos nuestra función <code>assert</code> para verificar algunas suposiciones sobre los detalles de nuestros datos.</p>
+<p>Podemos usar el juego de <a href="https://lodash.com/docs#isBoolean">funciones de checkeo de tipos</a> de lodash para encargarnos de realizar las verificaciones, pasando el resultado de la verificación a <code>assert</code> para producir nuestros errores.</p>
+<p>Digamos que nuestro proceso de importación de datos produjo algunos errores:</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> data = [{<span class="hljs-string">"name"</span>:<span class="hljs-string">"Dan"</span>,
+             <span class="hljs-string">"age"</span>:<span class="hljs-number">23</span>,
+             <span class="hljs-string">"superhuman"</span>:<span class="hljs-literal">false</span>},
+            {<span class="hljs-string">"name"</span>:<span class="hljs-string">"Sleepwalker"</span>,
+              <span class="hljs-string">"age"</span>:<span class="hljs-literal">NaN</span>,
+              <span class="hljs-string">"superhuman"</span>:<span class="hljs-string">"TRUE"</span>}
+];
+</code></pre>
+<p>El primer item se vee bien, pero nuestro segundo item tiene algunos problemas. El análisis de la edad para el inmortal <a href="http://es.wikipedia.org/wiki/Sleepwalkers">Sleepwalker</a> lo ha dejado sin edad. También, malos datos de entrada ha no ha dejado con un string en <code>superhuman</code>, donde esperamos un booleano.</p>
+<p>Una simple funcion de verificación de suposiciones que puede ejecutarse en estos datos puede lucir similar a esto:</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkDataContent</span><span class="hljs-params">(data)</span> </span>{
+  data.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(d)</span> </span>{
+    <span class="hljs-keyword">var</span> dString = <span class="hljs-built_in">JSON</span>.stringify(d);
+    assert(_.isString(d.name), dString + <span class="hljs-string">" has a bad name - should be a string"</span>);
+    assert(_.isNumber(d.age), dString + <span class="hljs-string">" has a bad age - should be a number"</span>);
+    assert(!_.isNaN(d.age), dString + <span class="hljs-string">" has a bad age - should not be NaN"</span>);
+    assert(_.isBoolean(d.superhuman), dString + <span class="hljs-string">" has a bad superhuman - should be boolean"</span>);
+  });
+}
+
+checkDataContent(data);
+</code></pre>
+<pre><code><span class="hljs-status">=&gt;</span> {<span class="hljs-string">"name"</span><span class="hljs-symbol">:<span class="hljs-string">"Sleepwalker"</span></span>,<span class="hljs-string">"age"</span><span class="hljs-symbol">:null</span>,<span class="hljs-string">"superhuman"</span><span class="hljs-symbol">:<span class="hljs-string">"TRUE"</span></span>} has a bad age - should not be <span class="hljs-constant">NaN</span>
+{<span class="hljs-string">"name"</span><span class="hljs-symbol">:<span class="hljs-string">"Sleepwalker"</span></span>,<span class="hljs-string">"age"</span><span class="hljs-symbol">:null</span>,<span class="hljs-string">"superhuman"</span><span class="hljs-symbol">:<span class="hljs-string">"TRUE"</span></span>} has a bad superhuman - should be boolean
+</code></pre><div class="aside">Este código esta usando lodash</div>
+
+<p>De nuevo, el foco aquí es la detección de problema en los datos. Tu quieres algo rápido y simple que sirva como una señal de alerta temprana.</p>
+<p>Desafortunadamente, la primitiva de JavaScript <code>NaN</code> es en efecto un número, y entonces es necesario realizar verificaciones adicionales. A medida que más datos ingresan, esta función necesitará ser actualizada para añadir más verificaciones. Esto puede resultar un poco tedioso, pero un poco de verificaciones puede resultar en un largo camino hacia mantener la cordura.</p>
+<h2 id="suposiciones-en-la-forma-de-los-datos">Suposiciones en la forma de los datos</h2>
+<p>Así cómo puedes probar tus suposiciones sobre el contenido de tus datos, puede ser una buena idea probar tus suposiciones sobre la <em>forma</em> de tus datos. Aquí, la forma solo se refiere al tamaño y la estructura de tus datos. Filas y columnas.</p>
+<p>Algo simple para realizar esta verificación puede lucir cómo esto:</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">checkDataShape</span><span class="hljs-params">(data)</span> </span>{
+  assert(data.length &gt; <span class="hljs-number">0</span>, <span class="hljs-string">"data is empty"</span>);
+  assert(data.length &gt; <span class="hljs-number">4</span>, <span class="hljs-string">"data is too small"</span>);
+  <span class="hljs-keyword">var</span> keys = d3.keys(data[<span class="hljs-number">0</span>]);
+  assert(keys.length === <span class="hljs-number">4</span>, <span class="hljs-string">"wrong number of columns"</span>);
+}
+
+checkDataShape(data);
+</code></pre>
+<pre><code>=&gt; <span class="hljs-typedef"><span class="hljs-keyword">data</span> is too small</span>
+<span class="hljs-title">wrong</span> number <span class="hljs-keyword">of</span> columns
+</code></pre><p>Las dos funciones pueden combinarse fácilmente en una, pero es importante prestar atención a ambos aspectos de tus datos.</p>
+<h2 id="m-s-aserciones">Más aserciones</h2>
+<p>Si esto es un enfoque que te atrae, y tus datos pueden volverse realmente complicados (o realmente confusos), tu puedes querer esporar usando código de aserción más complicado.</p>
+<p>Una librería muy útil para explorar es <a href="http://chaijs.com/api/assert/">Chai</a>, la cuál viene con una gran colección de funciones de aserción. Eso puede ayurate a verificar cosas más complicadas cómo cuándo dos objetos son iguales o cuando un objeto tiene o no una propiedad.</p>
+<p>Por ejemplo:</p>
+<pre><code class="lang-javascript">assert.deepEqual({ tea: <span class="hljs-string">'green'</span> }, { tea: <span class="hljs-string">'green'</span> });
+</code></pre>
+<pre><code>=&gt; <span class="hljs-keyword">true</span>
+</code></pre><div class="aside">Este código esta usando la librería de aserciones de chai</div>
+
+<h2 id="pr-xima-tarea">Próxima tarea</h2>
+<p><a href="node.html">Usando Node</a></p>
+<h2 id="ver-tambi-n">Ver también</h2>
+<ul>
+<li><a href="http://www.pgbovine.net/parsing-raw-data.htm">Analizando datos crudos</a> - una gran guia que motivo esta sección</li>
+<li><a href="http://chaijs.com/api/assert/">Chai</a> - Librería de aserciones Chai</li>
+</ul>
+
+  </div>
+  <br/><br/>
+  <section id="footer">
+    Made with ♥ by <a href="http://bocoup.com/datavis">The Bocoup Data Visualization Team</a>.
+  </section>
+  <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-60734450-1', 'auto');
+ga('send', 'pageview');
+
+  </script>
+  </body>
+  </html>
