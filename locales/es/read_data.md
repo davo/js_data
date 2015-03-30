@@ -6,7 +6,7 @@
 
 [D3 tiene un montón](https://github.com/mbostock/d3/wiki/Requests) de tipos de archivos que soporta cuando se cargan los datos, y uno de los más comunes es el viejo CSV (valores separados por coma).
 
-Vamos a decir que tienes un archivo csv con los datos de alguna ciudad:
+Digamos que tienes un archivo csv con los datos de alguna ciudad:
 
 ```bash
 cities.csv:
