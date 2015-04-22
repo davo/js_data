@@ -4,7 +4,7 @@ El tiempo es una de esas cosas complicadas de la programación que parece fácil
 
 ## Cadena a fecha
 
-La primera tarea cuando trabajamos con fechas es usualmnte obtener un [objeto Fecha](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) dentro de una cadena. La mayoría de las veces, sus datos poseen fechas o tiempo en un formato (mayormente) arbitrario, y usted necesita forzar ese desorden en una fecha puntual.
+La primera tarea cuando trabajamos con fechas es usualmente obtener un [objeto Fecha](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) dentro de una cadena. La mayoría de las veces, sus datos poseen fechas o tiempo en un formato (mayormente) arbitrario, y usted necesita forzar ese desorden en una fecha puntual.
 
 D3 tiene [d3.time.format](https://github.com/mbostock/d3/wiki/Time-Formatting#format) el cual provee una manera de interpretar esto. Fue un poco confuso para mí la primera vez que lo tuve que probar. Usted utilizará esta función para crear un interprete de una cadena, y luego utilizar el intérprete para finalmente convertir la cadena.
 
@@ -17,26 +17,25 @@ Para convertir esta cadena de fecha en un objeto Fecha, necesitaremos un interpr
 @@ code=time/time.02.js @@
 <div class="aside">Este código está utilizando d3.js</div>
 
+El registro cadena `d3.time.format` indica como cadena fecha debe verse. Existen [muchas opciones](https://github.com/mbostock/d3/wiki/Time-Formatting#format) para variables especiales o prefijos con signo de porcentaje. Debería ver en la cadena Estoy usando mes, dia, y año de cuatro dígitos. Las barras en el formato de cada no son variables especiales - son unicamente lo que esperamos encontrar separando los campos dentro cadena fecha.
 
-El registro de cadena `d3.time.format` indica que como debería verse la cadena de fecha. Usted tiene [muchas opciones](https://github.com/mbostock/d3/wiki/Time-Formatting#format) for the special, percent-sign-prefixed variables. You can see in the string I'm using month, day, and four-digit year. The slashes in the format string are not special variables - but just what we expect to find separating the fields in the date string.
-
-Next we use the parser to parse our string.
+Luego usaremos el interprete para traducir nuestra cadena.
 
 @@ code=time/time.03.js @@
 
 @@ code=time/time.03.out @@
 
-Cool! Now our date is actually a Date object.
+Genial! Ahora nuestra fecha es realmente un objeto Fecha.
 
-Here are a few more time parsers to show the capabilities of D3's parsing.
+Aquí hay algunos otros interpretes de tiempo para ejemplificar las capacidades del interprete de D3.
 
-Just the date:
+Solo la fecha:
 
 @@ code=time/time.04.js @@
 
 @@ code=time/time.04.out @@
 
-<div class="aside">This code is using d3.js</div>
+<div class="aside">Este código está utilizando d3.js</div>
 
 The little dash in front of the `d` is to remove the 0-padding)
 
