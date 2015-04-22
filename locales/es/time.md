@@ -1,6 +1,6 @@
 # Trabajando con tiempo
 
-El tiempo es una de esas cosas complicadas de la programación que parece fácil, pero usualmente termina no siendolo. Vamos a usar las funciones [time formating](https://github.com/mbostock/d3/wiki/Time-Formatting) e [interval](https://github.com/mbostock/d3/wiki/Time-Intervals) construídas dentro de D3. También vamos a repasar la poderosa librería [Moment.js](http://momentjs.com/), para cuando necesitemos más poder sobre el tiempo.
+El tiempo es una de esas cosas complicadas de la programación que parece fácil, pero usualmente termina no siendolo. Vamos a utilizar las funciones [time formating](https://github.com/mbostock/d3/wiki/Time-Formatting) e [interval](https://github.com/mbostock/d3/wiki/Time-Intervals) construídas dentro de D3. También vamos a repasar la poderosa librería [Moment.js](http://momentjs.com/), para cuando necesitemos más poder sobre el tiempo.
 
 ## Cadena a fecha
 
@@ -18,7 +18,7 @@ Para convertir esta cadena de fecha en un objeto Fecha, necesitaremos un interpr
 <div class="aside">Este código está utilizando d3.js</div>
 
 
-The input string to `d3.time.format` indicates what the date string should look like. You have a [lot of options](https://github.com/mbostock/d3/wiki/Time-Formatting#format) for the special, percent-sign-prefixed variables. You can see in the string I'm using month, day, and four-digit year. The slashes in the format string are not special variables - but just what we expect to find separating the fields in the date string.
+El registro de cadena `d3.time.format` indica que como debería verse la cadena de fecha. Usted tiene [muchas opciones](https://github.com/mbostock/d3/wiki/Time-Formatting#format) for the special, percent-sign-prefixed variables. You can see in the string I'm using month, day, and four-digit year. The slashes in the format string are not special variables - but just what we expect to find separating the fields in the date string.
 
 Next we use the parser to parse our string.
 

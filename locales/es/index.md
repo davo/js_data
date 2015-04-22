@@ -25,7 +25,7 @@ Se asume que el lector ya posee algunos conocimientos básicos de JavaScript.
 Puedes acceder a esta guía en los siguientes idiomas:
 
 - [English](/)
-- [Español](/es-ES/)
+- [Español](/es/)
 
 ## Código
 
