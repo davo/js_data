@@ -112,10 +112,10 @@ JSON has become the language of the internet for good reason. Its easy to unders
 employees.json:
 
 [
- {"name":"Andy Hunt,
- "title":"Big Boss",
-   "age": 68,
-   "bonus": true
+ {"name":"Andy Hunt",
+  "title":"Big Boss",
+  "age": 68,
+  "bonus": true
  },
  {"name":"Charles Mack",
   "title":"Jr Dev",
@@ -156,7 +156,7 @@ To add another data file, simply add another defer and extend the input paramete
 
 ## Next Task
 
-[Summarizing Data](summarize_data.html)
+[Combining Data](combine_data.html)
 
 ## See Also
 
